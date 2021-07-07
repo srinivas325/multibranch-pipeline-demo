@@ -1,10 +1,6 @@
 pipeline {
 
-    agent {
-        node {
-            label 'master'
-        }
-    }
+    agent any
 
     options {
         buildDiscarder logRotator( 
@@ -14,21 +10,12 @@ pipeline {
     }
 
     stages {
-        
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs()
-                sh """
-                echo "Cleaned Up Workspace For Project"
-                """
-            }
-        }
 
         stage('Code Checkout') {
             steps {
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: '*/main']], 
+                    branches: [[name: '*/master']], 
                     userRemoteConfigs: [[url: 'https://github.com/srinivas325/multibranch-pipeline-demo.git']]
                 ])
             }
@@ -36,9 +23,9 @@ pipeline {
 
         stage(' Unit Testing') {
             steps {
-                sh """
+                
                 echo "Running Unit Tests"
-                """
+             
             }
         }
 
